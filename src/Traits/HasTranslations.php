@@ -10,7 +10,7 @@ trait HasTranslations
     public static function bootHasTranslations(): void
     {
         static::created(function ($model) {
-            $languages = self::getLanguageModel($model);
+            $languages = self::getLanguageModel();
             foreach ($languages->all() as $language) {
                 $translations = self::getTranslatableFields($model, $language);
                 if ($translations) {
@@ -21,7 +21,7 @@ trait HasTranslations
 
         static::saving(function ($model) {
             if (isset($model->id)) {
-                $languages = self::getLanguageModel($model);
+                $languages = self::getLanguageModel();
                 foreach ($languages->all() as $language) {
                     $translations = self::getTranslatableFields($model, $language);
                     if ($translations) {
@@ -38,13 +38,10 @@ trait HasTranslations
 
     }
 
-    private static function getLanguageModel($model): Model
+    private static function getLanguageModel()
     {
         $defaultLanguageModel = config('laravel-translations.language_model');
-
-        return isset($model->translation_model['language_model'])
-            ? new $model->translation_model['language_model']
-            : new $defaultLanguageModel;
+        return new $defaultLanguageModel;
     }
 
     private static function getTranslatableFields($model, $language): array
