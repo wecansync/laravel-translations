@@ -1,0 +1,36 @@
+{
+    "name": "wecansync/laravel-translations",
+    "version": "1.0.0",
+    "description": "Manage translations in a seperated table",
+    "license": "MIT",
+    "homepage": "https://github.com/wecansync/laravel-translations",
+    "keywords": [
+        "wecansync",
+        "laravel-translations",
+        "translations",
+        "laravel"
+    ],
+    "authors": [
+        {
+            "name": "Ebrahim Hanna",
+            "email": "info@wecansync.com",
+            "homepage": "https://wecansync.com/",
+            "role": "Software Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WeCanSync\\LaravelTranslations\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "WeCanSync\\LaravelTranslations\\PackageServiceProvider"
+            ]
+        }
+    }
+}
