@@ -96,7 +96,7 @@ trait HasTranslations
         }
     }
 
-    public function getTranslations($language_id, $field): string
+    public function getTranslations($language_id, $field): mixed
     {
         $foreign_key = self::getModelForeignKey($this);
 
