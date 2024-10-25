@@ -1,6 +1,6 @@
 {
     "name": "wecansync/laravel-translations",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Manage translations in a seperated table",
     "license": "MIT",
     "homepage": "https://github.com/wecansync/laravel-translations",
