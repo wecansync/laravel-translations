@@ -1,6 +1,8 @@
 # Laravel Translation Management
-
-A Laravel package for managing translations in a separate database table, making it easier to handle translations in your application.
+[![Current version](https://img.shields.io/packagist/v/wecansync/laravel-translations.svg?logo=composer)](https://packagist.org/packages/wecansync/laravel-translations)
+[![Monthly Downloads](https://img.shields.io/packagist/dm/wecansync/laravel-translations.svg)](https://packagist.org/packages/wecansync/laravel-translations/stats)
+[![Total Downloads](https://img.shields.io/packagist/dt/wecansync/laravel-translations.svg)](https://packagist.org/packages/wecansync/laravel-translations/stats)
+[![codecov](https://codecov.io/gh/wecansync/laravel-translations/branch/main/graph/badge.svg)](https://codecov.io/gh/wecansync/laravel-translations)
 
 
 ## Features
