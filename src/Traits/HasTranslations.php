@@ -48,9 +48,7 @@ trait HasTranslations
     {
         $translations = [];
         foreach ($model->translation_model['translatable'] as $field) {
-            if (request()->get($field.'_'.$language->code)) {
-                $translations[$field] = request()->get($field.'_'.$language->code);
-            }
+            $translations[$field] = request()->get($field.'_'.$language->code);
         }
 
         return $translations;
