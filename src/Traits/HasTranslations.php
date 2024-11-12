@@ -13,7 +13,7 @@ trait HasTranslations
             $languages = self::getLanguageModel();
             foreach ($languages->all() as $language) {
                 $translations = self::getTranslatableFields($model, $language);
-                if ($translations) {
+                if ($translations && !empty(array_filter($translations, function ($a) { return $a !== null;}))) {
                     self::createRecord($model, $language, $translations);
                 }
             }
@@ -24,7 +24,7 @@ trait HasTranslations
                 $languages = self::getLanguageModel();
                 foreach ($languages->all() as $language) {
                     $translations = self::getTranslatableFields($model, $language);
-                    if ($translations) {
+                    if ($translations && !empty(array_filter($translations, function ($a) { return $a !== null;}))) {
                         self::updateRecord($model, $language, $translations);
                     }
                 }
