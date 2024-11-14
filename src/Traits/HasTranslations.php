@@ -2,7 +2,6 @@
 
 namespace WeCanSync\LaravelTranslations\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasTranslations
@@ -24,9 +23,7 @@ trait HasTranslations
                 $languages = self::getLanguageModel();
                 foreach ($languages->all() as $language) {
                     $translations = self::getTranslatableFields($model, $language);
-                    if ($translations && !empty(array_filter($translations, function ($a) { return $a !== null;}))) {
-                        self::updateRecord($model, $language, $translations);
-                    }
+                    self::updateRecord($model, $language, $translations);
                 }
             }
         });
@@ -94,11 +91,9 @@ trait HasTranslations
         }
     }
 
-    public function getTranslations($language_id, $field): mixed
+    public function getTranslations($language_id, $field, string $key = null): mixed
     {
-        $foreign_key = self::getModelForeignKey($this);
-
-        return $this->translationRelation()->where($foreign_key, $language_id)->select($field)->first()?->$field;
+        return $this->translationRelation()->where($key ?? self::getModelForeignKey($this), $language_id)->select($field)->first()?->$field;
     }
 
     public function translationRelation(): HasMany
