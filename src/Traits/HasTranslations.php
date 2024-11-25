@@ -101,10 +101,15 @@ trait HasTranslations
         return $this->hasMany(self::getTranslationsModel($this), self::getModelOwnerKey($this), 'id');
     }
 
-    private static function getTranslationsModel($model)
+    private static function getTranslationsModel($model): Mixed
     {
         return isset($model->translation_model['model'])
             ? new $model->translation_model['model']
             : null;
+    }
+
+    public function clearTranslations($language_id, string $key = null): bool
+    {
+        return $this->translationRelation()->where($key ?? self::getModelForeignKey($this), $language_id)->delete();
     }
 }
