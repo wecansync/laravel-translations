@@ -40,7 +40,7 @@
             }
 
             body {
-                margin: 0;
+                margin: 5% 0 0 0;
                 line-height: inherit
             }
 
@@ -808,7 +808,7 @@
                 }
 
                 .dark\:text-white\/50 {
-                    color: rgb(255 255 255 / 0.5)
+                    color: #fff
                 }
 
                 .dark\:text-white {
@@ -884,13 +884,13 @@
     <form action="{{route('category.store')}}" method="POST">
         @csrf
         <div class="form-group">
-            <label>Name</label>
+            <label>Name*</label>
             <input type="text" class="form-control" name="name" required>
         </div>
         @foreach($languages as $language)
             <div class="form-group">
                 <label>Name({{$language->code}})</label>
-                <input type="text" class="form-control" name="name_{{$language->code}}" required>
+                <input type="text" class="form-control" name="translations[{{$language->id}}][name]" >
             </div>
         @endforeach
                 <button type="submit" class="btn btn-primary">Submit</button>

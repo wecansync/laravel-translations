@@ -12,8 +12,8 @@ class MainController extends Controller
     {
         $languages = Language::all();
         $categories = Category::all();
-        $category = Category::first();
-        return view('welcome', compact('languages', 'categories', 'category'));
+
+        return view('welcome', compact('languages', 'categories'));
     }
 
     public function store_category(Request $request)
