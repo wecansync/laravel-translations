@@ -15,6 +15,5 @@ class Category extends Model
 
     protected $translation_model = [
         'model' => CategoriesTranslation::class,
-        'translatable' => ['name'],
     ];
 }
