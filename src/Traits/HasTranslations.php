@@ -8,58 +8,55 @@ trait HasTranslations
 {
     public static function bootHasTranslations(): void
     {
-        static::created(function ($model) {
-            $languages = self::getLanguageModel();
-            foreach ($languages->all() as $language) {
-                $translations = self::getTranslatableFields($model, $language);
-                if ($translations && !empty(array_filter($translations, function ($a) { return $a !== null;}))) {
-                    self::createRecord($model, $language, $translations);
-                }
-            }
-        });
-
-        static::saving(function ($model) {
-            if (isset($model->id)) {
-                $languages = self::getLanguageModel();
-                foreach ($languages->all() as $language) {
-                    $translations = self::getTranslatableFields($model, $language);
-                    self::updateRecord($model, $language, $translations);
-                }
-            }
+        static::saved(function ($model) {
+            self::manageTranslations($model);
         });
 
         static::deleted(function ($model) {
             $translations = new $model->translation_model['model'];
             $translations->where('model_id', $model->id)->delete();
         });
+    }
 
+    private static function manageTranslations($model): void
+    {
+        if (isset($model->translation_model['skip_routes']) && !is_null($model->translation_model['skip_routes'])) {
+            if (request()->routeIs($model->translation_model['skip_routes'])) {
+                return;
+            }
+        }
+        $translations = request()->get(self::getTranslationDataKey($model));
+        foreach ($translations as $language => $field) {
+            if (self::getLanguageModel()->exists($language)) {
+                self::manageRecord($model, $language, $field);
+            }
+        }
+    }
+
+    private static function getTranslationDataKey($model): string
+    {
+        return isset($model->translation_model['translations_data_key']) ? $model->translation_model['translations_data_key'] : config('laravel-translations.translations_data_key');
     }
 
     private static function getLanguageModel()
     {
         $defaultLanguageModel = config('laravel-translations.language_model');
+
         return new $defaultLanguageModel;
     }
 
-    private static function getTranslatableFields($model, $language): array
-    {
-        $translations = [];
-        foreach ($model->translation_model['translatable'] as $field) {
-            $translations[$field] = request()->get($field.'_'.$language->code);
-        }
-
-        return $translations;
-    }
-
-    private static function createRecord($model, $language, $translations): void
+    private static function manageRecord($model, $language_id, $translations): void
     {
         $foreign_key = self::getModelForeignKey($model);
         $owner_key = self::getModelOwnerKey($model);
         $translation_model = new $model->translation_model['model'];
-        $translation_model->create(array_merge($translations, [
-            $foreign_key => $language->id,
-            $owner_key => $model->id,
-        ]));
+        $translation_model->updateOrCreate(
+            [
+                $foreign_key => $language_id,
+                $owner_key => $model->id,
+            ],
+            $translations
+        );
     }
 
     private static function getModelForeignKey($model): string
@@ -73,27 +70,16 @@ trait HasTranslations
 
     }
 
-    private static function updateRecord($model, $language, $translations): void
+    public function withTranslations($translations): void
     {
-        $foreign_key = self::getModelForeignKey($model);
-        $owner_key = self::getModelOwnerKey($model);
-        $translation_model = new $model->translation_model['model'];
-        $exists = $translation_model->where($foreign_key, $language->id)
-            ->where($owner_key, $model->id)
-            ->first();
-        if ($exists) {
-            $exists->update(array_merge($translations));
-        } else {
-            $translation_model::create(array_merge($translations, [
-                $foreign_key => $language->id,
-                $owner_key => $model->id,
-            ]));
+        foreach ($translations as $language_id => $translation) {
+            self::manageRecord($this->getModel(), $language_id, $translation);
         }
     }
 
-    public function getTranslations($language_id, $field, string $key = null): mixed
+    public function clearTranslations($language_id, ?string $key = null): bool
     {
-        return $this->translationRelation()->where($key ?? self::getModelForeignKey($this), $language_id)->select($field)->first()?->$field;
+        return $this->translationRelation()->where($key ?? self::getModelForeignKey($this), $language_id)->delete();
     }
 
     public function translationRelation(): HasMany
@@ -101,15 +87,15 @@ trait HasTranslations
         return $this->hasMany(self::getTranslationsModel($this), self::getModelOwnerKey($this), 'id');
     }
 
-    private static function getTranslationsModel($model): Mixed
+    private static function getTranslationsModel($model): mixed
     {
         return isset($model->translation_model['model'])
             ? new $model->translation_model['model']
             : null;
     }
 
-    public function clearTranslations($language_id, string $key = null): bool
+    public function getTranslations($language_id, $field, ?string $key = null): mixed
     {
-        return $this->translationRelation()->where($key ?? self::getModelForeignKey($this), $language_id)->delete();
+        return $this->translationRelation()->where($key ?? self::getModelForeignKey($this), $language_id)->select($field)->first()?->$field;
     }
 }
