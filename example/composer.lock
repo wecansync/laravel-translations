@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce9afe04301766b822978ab70a13156e",
+    "content-hash": "aa456a18a6f97ad79881261bc482257a",
     "packages": [
         {
             "name": "brick/math",
@@ -5613,16 +5613,16 @@
         },
         {
             "name": "wecansync/laravel-translations",
-            "version": "1.0.2",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wecansync/laravel-translations.git",
-                "reference": "7e416fc24a1d3b6bcb64a2948fe5227dae7c0b7d"
+                "reference": "6de076c8f5ee5bf0bdbcbfd2ae5779c5e29f5b2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wecansync/laravel-translations/zipball/7e416fc24a1d3b6bcb64a2948fe5227dae7c0b7d",
-                "reference": "7e416fc24a1d3b6bcb64a2948fe5227dae7c0b7d",
+                "url": "https://api.github.com/repos/wecansync/laravel-translations/zipball/6de076c8f5ee5bf0bdbcbfd2ae5779c5e29f5b2b",
+                "reference": "6de076c8f5ee5bf0bdbcbfd2ae5779c5e29f5b2b",
                 "shasum": ""
             },
             "require": {
@@ -5663,9 +5663,9 @@
             ],
             "support": {
                 "issues": "https://github.com/wecansync/laravel-translations/issues",
-                "source": "https://github.com/wecansync/laravel-translations/tree/1.0.2"
+                "source": "https://github.com/wecansync/laravel-translations/tree/2.0.0"
             },
-            "time": "2024-10-31T09:50:28+00:00"
+            "time": "2024-11-27T10:20:44+00:00"
         }
     ],
     "packages-dev": [

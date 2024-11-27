@@ -19,4 +19,9 @@ return [
      * allowing for multiple translations for that record.
      */
     'owner_key' => 'model_id',
+    /*
+     * Key name for translations data in the request array.
+     * This specifies where to look for the array of translations in the request payload.
+     */
+    'translations_data_key' => 'translations',
 ];
