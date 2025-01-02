@@ -80,7 +80,6 @@
       <path value="$PROJECT_DIR$/example/vendor/webmozart/assert" />
       <path value="$PROJECT_DIR$/example/vendor/ta-tikoma/phpunit-architecture-test" />
       <path value="$PROJECT_DIR$/example/vendor/guzzlehttp/promises" />
-      <path value="$PROJECT_DIR$/example/vendor/wecansync/laravel-translations" />
       <path value="$PROJECT_DIR$/example/vendor/phpdocumentor/type-resolver" />
       <path value="$PROJECT_DIR$/example/vendor/phpdocumentor/reflection-docblock" />
       <path value="$PROJECT_DIR$/example/vendor/graham-campbell/result-type" />
@@ -136,11 +135,17 @@
       <path value="$PROJECT_DIR$/example/vendor/pestphp/pest-plugin-laravel" />
       <path value="$PROJECT_DIR$/example/vendor/pestphp/pest-plugin-arch" />
       <path value="$PROJECT_DIR$/example/vendor/pestphp/pest" />
+      <path value="$PROJECT_DIR$/example/vendor/wecansync/laravel-translations" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.0" />
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/example/phpunit.xml" custom_loader_path="$PROJECT_DIR$/example/vendor/autoload.php" paratest_path="$PROJECT_DIR$/example/vendor/bin/paratest_for_phpstorm" use_configuration_file="true" />
+    </phpunit_settings>
   </component>
   <component name="PsalmOptionsConfiguration">
     <option name="transferred" value="true" />

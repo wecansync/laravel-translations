@@ -26,9 +26,11 @@ trait HasTranslations
             }
         }
         $translations = request()->get(self::getTranslationDataKey($model));
-        foreach ($translations as $language => $field) {
-            if (self::getLanguageModel()->exists($language)) {
-                self::manageRecord($model, $language, $field);
+        if($translations) {
+            foreach ($translations as $language => $field) {
+                if (self::getLanguageModel()->exists($language)) {
+                    self::manageRecord($model, $language, $field);
+                }
             }
         }
     }
