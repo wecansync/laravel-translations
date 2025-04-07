@@ -3,6 +3,7 @@
 namespace WeCanSync\LaravelTranslations\Traits;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 trait HasTranslations
 {
@@ -26,7 +27,7 @@ trait HasTranslations
             }
         }
         $translations = request()->get(self::getTranslationDataKey($model));
-        if($translations) {
+        if ($translations) {
             foreach ($translations as $language => $field) {
                 if (self::getLanguageModel()->exists($language)) {
                     self::manageRecord($model, $language, $field);
@@ -52,6 +53,13 @@ trait HasTranslations
         $foreign_key = self::getModelForeignKey($model);
         $owner_key = self::getModelOwnerKey($model);
         $translation_model = new $model->translation_model['model'];
+
+        if (isset($model->translation_model['slug'])) {
+            if (isset($translations[$model->translation_model['slug']])) {
+                $translations['slug'] = self::generateUniqueSlug($translations[$model->translation_model['slug']], $translation_model, $model->id);
+            }
+        }
+
         $translation_model->updateOrCreate(
             [
                 $foreign_key => $language_id,
@@ -94,6 +102,27 @@ trait HasTranslations
         return isset($model->translation_model['model'])
             ? new $model->translation_model['model']
             : null;
+    }
+
+    protected static function generateUniqueSlug($title, $model, $ignoreId = null): string
+    {
+        $slug = Str::slug($title);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        while (self::slugExists($slug, $model, $ignoreId)) {
+            $slug = $originalSlug . '-' . $counter++;
+        }
+
+        return $slug;
+    }
+
+    protected static function slugExists($slug, $model, $ignoreId = null)
+    {
+        return $model::query()
+            ->where('slug', $slug)
+            ->when($ignoreId, fn($query) => $query->where('id', '!=', $ignoreId))
+            ->exists();
     }
 
     public function getTranslations($language_id, $field, ?string $key = null): mixed
